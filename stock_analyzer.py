@@ -1,5 +1,6 @@
 import pandas as pd
 import yfinance as yf
+import talib
 
 
 class StockAnalyzer:
@@ -8,9 +9,19 @@ class StockAnalyzer:
         pass
 
     @staticmethod
-    def get_moving_averages(data:pd.DataFrame, windows:list) -> dict:
-        ma = {window:data["close"].rolling(window).mean() for window in windows}
-        return ma
+    def get_RSI(data:pd.Series, period:int=14) -> pd.Series:
+        rsi = talib.RSI(data, period)
+        return rsi
+
+    @staticmethod
+    def get_SMA(data:pd.Series, windows:list=[5, 10, 20, 50, 100, 200]) -> pd.Series:
+        sma = pd.Series({window:talib.SMA(data, window) for window in windows})
+        return sma
+
+    @staticmethod
+    def get_EMA(data:pd.Series, windows:list=[5, 10, 20, 50, 100, 200]) -> pd.Series:
+        ema = pd.Series({window:talib.EMA(data, window) for window in windows})
+        return ema
 
     @staticmethod
     def get_split_dates(ticker:str) -> pd.Series:

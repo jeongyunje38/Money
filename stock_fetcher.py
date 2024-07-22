@@ -9,7 +9,6 @@ class StockFetcher:
         self.api_key = api_key
         self.secret_key = secret_key
         self.data_url = "https://data.alpaca.markets"
-        self.paper_api_url = "https://paper-api.alpaca.markets"
 
     def get_data(self, ticker:str, start_date:str, end_date:str, timeframe:str="1Day", limit:int=10000) -> list:
         url = f"{self.data_url}/v2/stocks/{ticker}/bars"
