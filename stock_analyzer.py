@@ -24,9 +24,10 @@ class StockAnalyzer:
         return ema
 
     @staticmethod
-    def get_split_dates(ticker:str) -> pd.Series:
+    def get_split_dates(ticker:str, start_date:str, end_date:str) -> pd.Series:
         split_dates = yf.Ticker(ticker).splits
         split_dates.index = pd.to_datetime(split_dates.index).strftime("%Y-%m-%d")
+        split_dates = split_dates[(start_date <= split_dates.index) & (split_dates.index <= end_date)]
         return split_dates
 
     @staticmethod

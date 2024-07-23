@@ -3,6 +3,8 @@ import plotly.graph_objects as go
 import streamlit as st
 from plotly.subplots import make_subplots
 
+from stock_analyzer import StockAnalyzer
+
 
 class Visualizer:
 
@@ -10,7 +12,7 @@ class Visualizer:
         pass
 
     @staticmethod
-    def show(data:pd.DataFrame) -> None:
+    def show(data:pd.DataFrame, split_dates:pd.Series) -> None:
         data.set_index("date", inplace=True)
         fig = make_subplots(
             rows=2,
@@ -40,6 +42,21 @@ class Visualizer:
                 ),
             row=2,
             col=1
+            )
+        for date in split_dates.index:
+            fig.add_annotation(
+                x=date,
+                y=data.loc[date, "close"],
+                text="Split",
+                showarrow=True,
+                arrowhead=2,
+                arrowsize=1,
+                arrowwidth=2,
+                arrowcolor="red",
+                font=dict(size=10, color="red"),
+                align="center",
+                row=1,
+                col=1
             )
         fig.update_layout(width=600, height=800, showlegend=False)
         fig.update_xaxes(rangeslider_visible=False)
